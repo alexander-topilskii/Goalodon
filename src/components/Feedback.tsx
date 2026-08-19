@@ -1,19 +1,34 @@
 import { Link } from 'react-router-dom'
+import { GitHubConnect } from './GitHubConnect.tsx'
+import { detectRepo } from '../lib/github/repo.ts'
+import { useSettings } from '../lib/settings-context.tsx'
 
 export function NeedSetup() {
+  const { settings } = useSettings()
+  const detected = detectRepo()
+  const known = Boolean(
+    (settings.owner || detected.owner) && (settings.repo || detected.repo),
+  )
   return (
     <section className="rounded-2xl border border-stone-200 bg-white p-4 text-stone-700">
-      <h2 className="text-base font-semibold text-stone-900">Сначала доступ к GitHub</h2>
-      <p className="mt-2 text-sm leading-relaxed">
-        Приложение не читает файлы с диска. Данные живут в вашем приватном репозитории. Вставьте
-        PAT и укажите owner/repo в настройках.
-      </p>
-      <Link
-        to="/settings"
-        className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-stone-900 px-4 text-sm font-medium text-white"
-      >
-        Открыть настройки
-      </Link>
+      <h2 className="text-base font-semibold text-stone-900">Подключите GitHub</h2>
+      {known ? (
+        <div className="mt-4">
+          <GitHubConnect compact />
+        </div>
+      ) : (
+        <>
+          <p className="mt-2 text-sm leading-relaxed">
+            Не удалось определить репозиторий автоматически. Укажите его в настройках.
+          </p>
+          <Link
+            to="/settings"
+            className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-stone-900 px-4 text-sm font-medium text-white"
+          >
+            Открыть настройки
+          </Link>
+        </>
+      )}
     </section>
   )
 }

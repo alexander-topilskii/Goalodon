@@ -1,3 +1,5 @@
+import { detectRepo } from './github/repo.ts'
+
 const TOKEN = 'goalodon.token'
 const OWNER = 'goalodon.owner'
 const REPO = 'goalodon.repo'
@@ -26,11 +28,12 @@ export function isValidOwnerRepo(owner: string, repo: string): boolean {
 }
 
 export function loadSettings(): AppSettings {
+  const detected = detectRepo()
   return {
     token: localStorage.getItem(TOKEN) ?? '',
-    owner: localStorage.getItem(OWNER) ?? '',
-    repo: localStorage.getItem(REPO) ?? '',
-    branch: localStorage.getItem(BRANCH) ?? 'main',
+    owner: localStorage.getItem(OWNER) || detected.owner,
+    repo: localStorage.getItem(REPO) || detected.repo,
+    branch: localStorage.getItem(BRANCH) || detected.branch || 'main',
   }
 }
 
