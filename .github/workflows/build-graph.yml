@@ -1,0 +1,29 @@
+name: Bake graph index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/days/**'
+
+concurrency:
+  group: build-graph
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run bake-graph
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: bake graph_index'
+          file_pattern: data/graph_index.json
