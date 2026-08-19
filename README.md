@@ -37,15 +37,15 @@ data/graph_index.json     # печётся GitHub Actions для календа�
 
 ## GitHub Pages
 
-UI собирается Actions и публикуется как статика. Данные (`/data`) в сборку **не входят** — приложение по-прежнему читает их через GitHub API.
+UI собирается Actions (`dist/`), не из исходников репозитория. Если в консоли `favicon.svg` и `/src/main.tsx` с 404 — Pages сейчас отдаёт **сырой `index.html` с ветки `main`**. Так приложение не запускается.
 
-1. **Settings → Pages → Source: GitHub Actions.**
-2. Пуш в `main` (код приложения) или **Actions → Deploy GitHub Pages → Run workflow**.
-3. Сайт: `https://<owner>.github.io/Goalodon/` (для репо `owner.github.io` корень сайта).
+1. Дождитесь зелёного workflow **Deploy GitHub Pages** (он пишет сборку в ветку `gh-pages` и пытается задеплоить через Actions).
+2. **Settings → Pages** выберите одно:
+   - **Source: GitHub Actions**, или
+   - **Deploy from a branch → `gh-pages` / `/ (root)`** — не `main`.
+3. Сайт: `https://<owner>.github.io/Goalodon/`. В исходнике страницы должны быть `/Goalodon/assets/...js`, а не `/src/main.tsx`.
 
-Workflow: `.github/workflows/pages.yml`. Меняется только код UI — пуш в `data/days/**` страницы не пересобирает.
-
-Если репозиторий **приватный**, Pages на бесплатном аккаунте недоступен (нужен Pro/Team). Публичный репозиторий откроет и UI, и файлы в `/data`. Чтобы светить только приложение, держите данные в другом приватном репо и укажите его в Настройках UI. PAT по-прежнему живёт в браузере посетителя.
+Данные (`/data`) в статику не входят. Если репозиторий **приватный**, Pages на бесплатном аккаунте недоступен (нужен Pro/Team). Публичный репо откроет и UI, и `/data`.
 
 ## Скрипты
 

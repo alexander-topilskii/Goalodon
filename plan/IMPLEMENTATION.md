@@ -109,11 +109,12 @@
 
 ## Шаг 9. GitHub Pages
 
-- [x] `.github/workflows/pages.yml` (build + `actions/deploy-pages`)
-- [x] `VITE_BASE` = `/<repo>/` (или `/` для `owner.github.io`)
+- [x] `.github/workflows/pages.yml` (build + `actions/deploy-pages` + ветка `gh-pages`)
+- [x] `VITE_BASE` из `configure-pages` / `/<repo>/`
 - [x] `BrowserRouter` basename из `import.meta.env.BASE_URL`
+- [x] favicon через `%BASE_URL%favicon.svg` (не `/favicon.svg` с корня github.io)
 - [x] `dist/404.html` = копия `index.html` (SPA-маршруты `/day/...`)
 - [x] `public/.nojekyll`
-- [x] README: Pages source = GitHub Actions, приватный репо / публичные данные
+- [x] README: не публиковать `main` как Pages; только Actions или ветка `gh-pages`
 
 **Готово:** пуш кода на `main` публикует UI; данные по-прежнему только через API.

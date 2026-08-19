@@ -3,19 +3,10 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [main]
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - 'index.html'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'vite.config.ts'
-      - 'tsconfig*.json'
-      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -26,34 +17,55 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      vite_base: ${{ steps.base.outputs.vite_base }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
-      - name: Vite base path
+      - uses: actions/configure-pages@v5
+        id: pages
+        continue-on-error: true
+      - id: base
+        name: Vite base path
         run: |
-          OWNER='${{ github.repository_owner }}'
+          BASE='${{ steps.pages.outputs.base_path }}'
           REPO='${{ github.event.repository.name }}'
-          if [ "$REPO" = "${OWNER}.github.io" ]; then
-            echo "VITE_BASE=/" >> "$GITHUB_ENV"
+          OWNER='${{ github.repository_owner }}'
+          if [ -n "$BASE" ]; then
+            case "$BASE" in
+              /) VITE_BASE='/' ;;
+              */) VITE_BASE="$BASE" ;;
+              *) VITE_BASE="${BASE}/" ;;
+            esac
+          elif [ "$REPO" = "${OWNER}.github.io" ]; then
+            VITE_BASE='/'
           else
-            echo "VITE_BASE=/${REPO}/" >> "$GITHUB_ENV"
+            VITE_BASE="/${REPO}/"
           fi
+          echo "VITE_BASE=$VITE_BASE" >> "$GITHUB_ENV"
+          echo "vite_base=$VITE_BASE" >> "$GITHUB_OUTPUT"
       - run: npm ci
       - run: npm run build
-      - name: SPA fallback for client routes
+      - name: SPA fallback
         run: |
           cp dist/index.html dist/404.html
           touch dist/.nojekyll
-      - uses: actions/configure-pages@v5
+          test -f dist/favicon.svg
+          grep -q 'assets/' dist/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
 
-  deploy:
+  deploy-actions:
     needs: build
+    continue-on-error: true
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -61,3 +73,19 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-branch:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
+          enable_jekyll: false
