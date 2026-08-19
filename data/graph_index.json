@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T21:39:02.943Z",
+  "generatedAt": "2026-08-19T21:55:10.065Z",
   "days": {
     "2026-07-25": {
       "goal": "GTG",
@@ -368,14 +368,14 @@
     "2026-08-20": {
       "goal": "Легкий",
       "total": 5,
-      "done": 0,
+      "done": 1,
       "hasContent": true,
       "goals": [
         {
           "title": "Легкий",
           "project": "Подтягивания",
           "total": 5,
-          "done": 0
+          "done": 1
         }
       ]
     },
