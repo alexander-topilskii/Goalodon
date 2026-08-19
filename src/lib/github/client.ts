@@ -27,13 +27,40 @@ export async function testRepoAccess(octokit: Octokit, ref: RepoRef): Promise<vo
   await octokit.repos.get({ owner: ref.owner, repo: ref.repo })
 }
 
-export async function getFile(octokit: Octokit, ref: RepoRef, path: string): Promise<FileBlob | null> {
+const FRESH_HEADERS = {
+  'If-None-Match': '',
+  'Cache-Control': 'no-cache',
+}
+
+async function headCommitSha(octokit: Octokit, ref: RepoRef): Promise<string | null> {
+  try {
+    const { data } = await octokit.git.getRef({
+      owner: ref.owner,
+      repo: ref.repo,
+      ref: `heads/${ref.branch}`,
+      headers: FRESH_HEADERS,
+    })
+    return data.object.sha
+  } catch (error) {
+    const mapped = mapGithubError(error)
+    if (mapped.code === 'not_found') return null
+    throw mapped
+  }
+}
+
+async function readContent(
+  octokit: Octokit,
+  ref: RepoRef,
+  path: string,
+  rev: string,
+): Promise<FileBlob | null> {
   try {
     const { data } = await octokit.repos.getContent({
       owner: ref.owner,
       repo: ref.repo,
       path,
-      ref: ref.branch,
+      ref: rev,
+      headers: FRESH_HEADERS,
     })
     if (Array.isArray(data) || data.type !== 'file' || !('content' in data) || !data.sha) {
       throw { status: 404, message: 'not a file' }
@@ -55,6 +82,11 @@ export async function getFile(octokit: Octokit, ref: RepoRef, path: string): Pro
     if ((error as { status?: number }).status === 404) return null
     throw mapped
   }
+}
+
+export async function getFile(octokit: Octokit, ref: RepoRef, path: string): Promise<FileBlob | null> {
+  const head = await headCommitSha(octokit, ref)
+  return readContent(octokit, ref, path, head ?? ref.branch)
 }
 
 export async function putFile(

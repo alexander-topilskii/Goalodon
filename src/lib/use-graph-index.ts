@@ -3,15 +3,26 @@ import { emptyGraphIndex, parseGraphIndex } from './day-file/graph-index.ts'
 import type { GraphIndex } from './day-file/types.ts'
 import { createOctokit, getIndexFile, testRepoAccess } from './github/client.ts'
 import { isAppError, mapGithubError, type AppError } from './github/errors.ts'
+import { loadCachedIndexText, saveCachedIndexText } from './local-state.ts'
 import { useIndexOverlay } from './overlay-context.tsx'
 import { useSettings } from './settings-context.tsx'
 
+function readCachedIndex(): GraphIndex | null {
+  const text = loadCachedIndexText()
+  if (!text) return null
+  try {
+    return parseGraphIndex(text)
+  } catch {
+    return null
+  }
+}
+
 export function useGraphIndex() {
   const { settings, ready } = useSettings()
-  const { merge, clear } = useIndexOverlay()
-  const [index, setIndex] = useState<GraphIndex>(emptyGraphIndex)
-  const [loading, setLoading] = useState(ready)
-  const [fetched, setFetched] = useState(false)
+  const { merge, reconcile } = useIndexOverlay()
+  const [index, setIndex] = useState<GraphIndex>(() => readCachedIndex() ?? emptyGraphIndex)
+  const [loading, setLoading] = useState(() => readCachedIndex() == null)
+  const [fetched, setFetched] = useState(() => readCachedIndex() != null)
   const [error, setError] = useState<AppError | null>(null)
   const merged = useMemo(() => merge(index), [merge, index])
 
@@ -24,16 +35,17 @@ export function useGraphIndex() {
     try {
       await testRepoAccess(octokit, repo)
       const blob = await getIndexFile(octokit, repo)
-      clear()
-      if (!blob) setIndex(emptyGraphIndex)
-      else setIndex(parseGraphIndex(blob.text))
+      const parsed = blob ? parseGraphIndex(blob.text) : emptyGraphIndex
+      saveCachedIndexText(blob?.text ?? JSON.stringify(parsed))
+      reconcile(parsed)
+      setIndex(parsed)
     } catch (err) {
       setError(isAppError(err) ? err : mapGithubError(err))
     } finally {
       setFetched(true)
       setLoading(false)
     }
-  }, [ready, settings.token, settings.owner, settings.repo, settings.branch, clear])
+  }, [ready, settings.token, settings.owner, settings.repo, settings.branch, reconcile])
 
   useEffect(() => {
     void load()

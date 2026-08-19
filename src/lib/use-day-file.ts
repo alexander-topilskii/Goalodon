@@ -12,7 +12,9 @@ import {
 } from './day-file/index.ts'
 import { createOctokit, dayFilePath, getFile, putFile, type RepoRef } from './github/client.ts'
 import { isAppError, mapGithubError, type AppError } from './github/errors.ts'
+import { loadDaySnapshot, saveDaySnapshot } from './local-state.ts'
 import { useIndexOverlay } from './overlay-context.tsx'
+import { pickDayRead } from './restore.ts'
 import { useSettings } from './settings-context.tsx'
 
 export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
@@ -21,19 +23,30 @@ function mapGoals(day: DayFile, index: number, next: DayGoal): DayFile {
   return { ...day, goals: day.goals.map((goal, i) => (i === index ? next : goal)) }
 }
 
+function dayFromSnapshot(date: string): { day: DayFile; sha: string | null } {
+  const snap = loadDaySnapshot(date)
+  if (!snap) return { day: emptyDayFile(date), sha: null }
+  try {
+    return { day: { ...parseDayMarkdown(snap.text, date), date }, sha: snap.sha || null }
+  } catch {
+    return { day: emptyDayFile(date), sha: null }
+  }
+}
+
 export function useDayFile(date: string) {
   const { settings, ready } = useSettings()
   const { patch } = useIndexOverlay()
-  const [day, setDay] = useState<DayFile>(() => emptyDayFile(date))
-  const [loading, setLoading] = useState(true)
+  const [day, setDay] = useState<DayFile>(() => dayFromSnapshot(date).day)
+  const [loading, setLoading] = useState(() => !loadDaySnapshot(date))
   const [loadError, setLoadError] = useState<AppError | null>(null)
   const [saveError, setSaveError] = useState<AppError | null>(null)
   const [status, setStatus] = useState<SaveStatus>('idle')
 
-  const shaRef = useRef<string | null>(null)
+  const shaRef = useRef<string | null>(loadDaySnapshot(date)?.sha || null)
   const pendingRef = useRef<DayFile | null>(null)
   const inFlightRef = useRef(false)
   const dayRef = useRef(day)
+  const ticketRef = useRef(0)
 
   useEffect(() => {
     dayRef.current = day
@@ -49,6 +62,18 @@ export function useDayFile(date: string) {
         ? { owner: settings.owner, repo: settings.repo, branch: settings.branch }
         : null,
     [ready, settings.owner, settings.repo, settings.branch],
+  )
+
+  const remember = useCallback(
+    (canonical: DayFile, sha: string, confirmed: boolean) => {
+      saveDaySnapshot(date, {
+        sha,
+        text: serializeDayMarkdown(canonical),
+        updatedAt: Date.now(),
+        confirmed,
+      })
+    },
+    [date],
   )
 
   const pump = useCallback(async () => {
@@ -79,6 +104,9 @@ export function useDayFile(date: string) {
       )
       shaRef.current = sha
       patch(date, statsFromDay(canonical))
+      const pending = pendingRef.current
+      if (pending) remember(pending, sha, false)
+      else remember(canonical, sha, true)
       if (!pendingRef.current) setStatus('saved')
     } catch (error) {
       const mapped = isAppError(error) ? error : mapGithubError(error)
@@ -88,7 +116,7 @@ export function useDayFile(date: string) {
       inFlightRef.current = false
       if (pendingRef.current) void pump()
     }
-  }, [octokit, repo, date, patch])
+  }, [octokit, repo, date, patch, remember])
 
   const schedule = useCallback(
     (next: DayFile) => {
@@ -96,9 +124,11 @@ export function useDayFile(date: string) {
       dayRef.current = canonical
       setDay(canonical)
       pendingRef.current = canonical
+      patch(date, statsFromDay(canonical))
+      remember(canonical, shaRef.current ?? '', false)
       void pump()
     },
-    [date, pump],
+    [date, pump, remember, patch],
   )
 
   const reload = useCallback(async () => {
@@ -106,36 +136,47 @@ export function useDayFile(date: string) {
       setLoading(false)
       return
     }
-    setLoading(true)
+    const ticket = ++ticketRef.current
+    if (!loadDaySnapshot(date)) setLoading(true)
     setLoadError(null)
     try {
       const blob = await getFile(octokit, repo, dayFilePath(date))
-      if (!blob) {
+      if (ticket !== ticketRef.current) return
+      if (pendingRef.current || inFlightRef.current) return
+
+      const picked = pickDayRead(loadDaySnapshot(date), blob)
+      if (picked.text == null) {
         shaRef.current = null
         const empty = emptyDayFile(date)
         dayRef.current = empty
         setDay(empty)
       } else {
-        shaRef.current = blob.sha
-        const parsed = { ...parseDayMarkdown(blob.text, date), date }
+        shaRef.current = picked.writeSha
+        const parsed = { ...parseDayMarkdown(picked.text, date), date }
         dayRef.current = parsed
         setDay(parsed)
+        if (!picked.fromCache && blob) {
+          remember(parsed, blob.sha, true)
+        }
       }
     } catch (error) {
+      if (ticket !== ticketRef.current) return
       setLoadError(isAppError(error) ? error : mapGithubError(error))
     } finally {
-      setLoading(false)
+      if (ticket === ticketRef.current) setLoading(false)
     }
-  }, [octokit, repo, date])
+  }, [octokit, repo, date, remember])
 
   useEffect(() => {
+    ticketRef.current += 1
     pendingRef.current = null
-    shaRef.current = null
     setStatus('idle')
     setSaveError(null)
-    const empty = emptyDayFile(date)
-    dayRef.current = empty
-    setDay(empty)
+    const snap = dayFromSnapshot(date)
+    dayRef.current = snap.day
+    shaRef.current = snap.sha
+    setDay(snap.day)
+    setLoading(!loadDaySnapshot(date))
     void reload()
   }, [date, reload])
 
