@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { applyProgramToDay } from './programs/program.ts'
 import {
   emptyDayFile,
   isDayEmpty,
@@ -106,14 +107,16 @@ export function useDayFile(date: string) {
       const blob = await getFile(octokit, repo, dayFilePath(date))
       if (!blob) {
         shaRef.current = null
-        const empty = emptyDayFile(date)
-        dayRef.current = empty
-        setDay(empty)
+        const seeded = applyProgramToDay(date) ?? emptyDayFile(date)
+        dayRef.current = seeded
+        setDay(seeded)
       } else {
         shaRef.current = blob.sha
         const parsed = { ...parseDayMarkdown(blob.text, date), date }
-        dayRef.current = parsed
-        setDay(parsed)
+        const seeded = isDayEmpty(parsed) ? applyProgramToDay(date) : null
+        const next = seeded ?? parsed
+        dayRef.current = next
+        setDay(next)
       }
     } catch (error) {
       setLoadError(isAppError(error) ? error : mapGithubError(error))

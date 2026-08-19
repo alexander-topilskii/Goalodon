@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ErrorBanner, NeedSetup, SaveStatus } from '../components/Feedback.tsx'
 import { dayHeading, isValidISODate } from '../lib/dates.ts'
 import { parseAddedTasks } from '../lib/day-file/index.ts'
+import { getProgramDay } from '../lib/programs/program.ts'
 import { useDayFile } from '../lib/use-day-file.ts'
 
 export function DayPage() {
@@ -41,12 +42,22 @@ function DayBody({ date }: { date: string }) {
   const [adding, setAdding] = useState(false)
   const [menu, setMenu] = useState<number | null>(null)
 
+  const program = getProgramDay(date)
+
   if (!ready) return <NeedSetup />
 
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
-        <h1 className="text-xl font-semibold capitalize leading-tight">{dayHeading(date)}</h1>
+        <div>
+          <h1 className="text-xl font-semibold capitalize leading-tight">{dayHeading(date)}</h1>
+          {program ? (
+            <p className="mt-1 text-sm text-stone-500">
+              Тренировка: <span className="font-medium text-stone-800">{program.kind}</span>
+              {program.sets.length ? ` · ${program.sets.length} подх.` : ''}
+            </p>
+          ) : null}
+        </div>
         <SaveStatus status={status} />
       </div>
 
@@ -79,7 +90,11 @@ function DayBody({ date }: { date: string }) {
       <div>
         <h2 className="mb-2 text-sm font-semibold text-stone-500">Задачи</h2>
         {day.tasks.length === 0 ? (
-          <p className="text-sm text-stone-500">Пока пусто. Добавьте задачи кнопкой ниже.</p>
+          <p className="text-sm text-stone-500">
+            {program && (program.kind === 'Отдых' || program.kind === 'Отпуск')
+              ? 'Сегодня без подходов.'
+              : 'Пока пусто. Добавьте задачи кнопкой ниже.'}
+          </p>
         ) : (
           <ul className="flex flex-col gap-2">
             {day.tasks.map((task, index) => (

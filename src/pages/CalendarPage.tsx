@@ -9,6 +9,7 @@ import {
   shiftMonth,
   WEEKDAYS,
 } from '../lib/dates.ts'
+import { getProgramDay, programKindTone } from '../lib/programs/program.ts'
 import type { CalendarState } from '../lib/settings.ts'
 import type { DayIndexEntry, GraphIndex } from '../lib/day-file/types.ts'
 import { createOctokit, getIndexFile, testRepoAccess } from '../lib/github/client.ts'
@@ -27,10 +28,17 @@ function parseIndex(text: string): GraphIndex {
   }
 }
 
-function cellTone(entry: DayIndexEntry | undefined): string {
-  if (!entry?.hasContent) return 'bg-white text-stone-800'
-  if (entry.total > 0 && entry.done === entry.total) return 'bg-emerald-700 text-white'
-  return 'bg-emerald-100 text-emerald-950'
+function cellTone(entry: DayIndexEntry | undefined, programKind?: string): string {
+  if (entry?.hasContent) {
+    if (entry.total > 0 && entry.done === entry.total) return 'bg-emerald-700 text-white'
+    return 'bg-emerald-100 text-emerald-950'
+  }
+  if (!programKind) return 'bg-white text-stone-800'
+  const tone = programKindTone(programKind)
+  if (tone === 'rest') return 'bg-stone-100 text-stone-400'
+  if (tone === 'test') return 'bg-rose-100 text-rose-950'
+  if (tone === 'gtg') return 'bg-sky-100 text-sky-950'
+  return 'bg-amber-100 text-amber-950'
 }
 
 function resolveState(params: URLSearchParams, fallback: CalendarState): CalendarState {
@@ -216,22 +224,29 @@ function MonthGrid({
       <div className={`grid grid-cols-7 ${compact ? 'gap-0.5' : 'gap-1'}`}>
         {cells.map((cell) => {
           const entry = days[cell.date]
-          const status =
-            !entry?.hasContent
-              ? 'нет записи'
-              : entry.total > 0
-                ? `${entry.done} из ${entry.total}`
-                : 'есть запись'
+          const program = getProgramDay(cell.date)
+          const status = entry?.hasContent
+            ? entry.total > 0
+              ? `${entry.done} из ${entry.total}`
+              : 'есть запись'
+            : program
+              ? program.kind
+              : 'нет записи'
           const inner = (
             <span
               className={[
-                'flex items-center justify-center rounded-lg font-medium',
-                compact ? 'h-7 text-[10px]' : 'min-h-11 text-sm',
-                cell.inMonth ? cellTone(entry) : 'bg-transparent text-stone-300',
+                'flex flex-col items-center justify-center rounded-lg font-medium',
+                compact ? 'h-7 text-[10px]' : 'min-h-12 px-0.5 py-1 text-sm',
+                cell.inMonth ? cellTone(entry, program?.kind) : 'bg-transparent text-stone-300',
                 cell.date === today ? 'ring-2 ring-stone-900 ring-offset-1 ring-offset-[#fbf8f3]' : '',
               ].join(' ')}
             >
               {Number(cell.date.slice(8, 10))}
+              {!compact && cell.inMonth && program ? (
+                <span className="max-w-full truncate text-[8px] font-medium leading-tight opacity-80">
+                  {program.kind}
+                </span>
+              ) : null}
             </span>
           )
           if (compact) {
