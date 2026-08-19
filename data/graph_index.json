@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T18:38:22.757Z",
+  "generatedAt": "2026-08-19T18:39:47.168Z",
   "days": {
     "2026-07-25": {
       "goal": "GTG",
@@ -18,42 +18,42 @@
     "2026-07-26": {
       "goal": "GTG",
       "total": 6,
-      "done": 0,
+      "done": 6,
       "hasContent": true,
       "goals": [
         {
           "title": "GTG",
           "project": "Подтягивания",
           "total": 6,
-          "done": 0
+          "done": 6
         }
       ]
     },
     "2026-07-27": {
       "goal": "GTG",
       "total": 6,
-      "done": 0,
+      "done": 6,
       "hasContent": true,
       "goals": [
         {
           "title": "GTG",
           "project": "Подтягивания",
           "total": 6,
-          "done": 0
+          "done": 6
         }
       ]
     },
     "2026-07-28": {
       "goal": "GTG",
       "total": 6,
-      "done": 0,
+      "done": 6,
       "hasContent": true,
       "goals": [
         {
           "title": "GTG",
           "project": "Подтягивания",
           "total": 6,
-          "done": 0
+          "done": 6
         }
       ]
     },
