@@ -1,29 +1,1321 @@
 {
-  "generatedAt": "2026-08-19T17:13:02.718Z",
+  "generatedAt": "2026-08-19T17:42:42.301Z",
   "days": {
+    "2026-07-25": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-07-26": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-07-27": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-07-28": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-07-29": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-07-30": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-07-31": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-01": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-02": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-03": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-04": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-05": {
+      "goal": "GTG",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-06": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-07": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-08": {
+      "goal": "ТЕСТ",
+      "total": 1,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "ТЕСТ",
+          "project": "Подтягивания",
+          "total": 1,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-09": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
     "2026-08-10": {
       "goal": "GTG",
       "total": 5,
       "done": 5,
-      "hasContent": true
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 5
+        }
+      ]
     },
     "2026-08-11": {
       "goal": "GTG",
       "total": 5,
       "done": 5,
-      "hasContent": true
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 5
+        }
+      ]
+    },
+    "2026-08-12": {
+      "goal": "GTG",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-13": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-14": {
+      "goal": "GTG",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-15": {
+      "goal": "GTG",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-16": {
+      "goal": "GTG",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "GTG",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-17": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-18": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
     },
     "2026-08-19": {
       "goal": "Объем",
-      "total": 7,
-      "done": 1,
-      "hasContent": true
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Объем",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
     },
     "2026-08-20": {
       "goal": "Легкий",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-21": {
+      "goal": "Пирамида",
       "total": 6,
       "done": 0,
-      "hasContent": true
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Пирамида",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-22": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-23": {
+      "goal": "Объем",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Объем",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-24": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-25": {
+      "goal": "Легкий",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-26": {
+      "goal": "Субмакс",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Субмакс",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-27": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-28": {
+      "goal": "Объем",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Объем",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-29": {
+      "goal": "Пирамида",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Пирамида",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-30": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-08-31": {
+      "goal": "Легкий",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-01": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-02": {
+      "goal": "Субмакс",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Субмакс",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-03": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-04": {
+      "goal": "Объем",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Объем",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-05": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-06": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-07": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-08": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-09": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-10": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-11": {
+      "goal": "Отпуск",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отпуск",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-12": {
+      "goal": "Активация",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Активация",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-13": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-14": {
+      "goal": "Пирамида",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Пирамида",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-15": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-16": {
+      "goal": "Легкий",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-17": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-18": {
+      "goal": "Субмакс",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Субмакс",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-19": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-20": {
+      "goal": "Объем",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Объем",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-21": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-22": {
+      "goal": "Пирамида",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Пирамида",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-23": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-24": {
+      "goal": "Легкий",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-25": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-26": {
+      "goal": "ТЕСТ",
+      "total": 1,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "ТЕСТ",
+          "project": "Подтягивания",
+          "total": 1,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-27": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-28": {
+      "goal": "Гликолиз",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Гликолиз",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-29": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-09-30": {
+      "goal": "EMOM",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "EMOM",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-01": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-02": {
+      "goal": "Сверх-ус",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Сверх-ус",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-03": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-04": {
+      "goal": "Легкий",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-05": {
+      "goal": "Гликолиз",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Гликолиз",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-06": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-07": {
+      "goal": "EMOM",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "EMOM",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-08": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-09": {
+      "goal": "Сверх-ус",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Сверх-ус",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-10": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-11": {
+      "goal": "Легкий",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкий",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-12": {
+      "goal": "Гликолиз",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Гликолиз",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-13": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-14": {
+      "goal": "EMOM",
+      "total": 6,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "EMOM",
+          "project": "Подтягивания",
+          "total": 6,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-15": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-16": {
+      "goal": "Сверх-ус",
+      "total": 5,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Сверх-ус",
+          "project": "Подтягивания",
+          "total": 5,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-17": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-18": {
+      "goal": "Тонус",
+      "total": 3,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Тонус",
+          "project": "Подтягивания",
+          "total": 3,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-19": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-20": {
+      "goal": "Пик",
+      "total": 3,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Пик",
+          "project": "Подтягивания",
+          "total": 3,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-21": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-22": {
+      "goal": "Активация",
+      "total": 3,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Активация",
+          "project": "Подтягивания",
+          "total": 3,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-23": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-24": {
+      "goal": "Легкая",
+      "total": 2,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Легкая",
+          "project": "Подтягивания",
+          "total": 2,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-25": {
+      "goal": "Отдых",
+      "total": 0,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "Отдых",
+          "project": "Подтягивания",
+          "total": 0,
+          "done": 0
+        }
+      ]
+    },
+    "2026-10-26": {
+      "goal": "ТЕСТ",
+      "total": 1,
+      "done": 0,
+      "hasContent": true,
+      "goals": [
+        {
+          "title": "ТЕСТ",
+          "project": "Подтягивания",
+          "total": 1,
+          "done": 0
+        }
+      ]
     }
   }
 }

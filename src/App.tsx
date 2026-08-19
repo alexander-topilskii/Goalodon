@@ -4,6 +4,7 @@ import { IndexOverlayProvider } from './lib/overlay-context.tsx'
 import { SettingsProvider } from './lib/settings-context.tsx'
 import { CalendarPage } from './pages/CalendarPage.tsx'
 import { DayPage } from './pages/DayPage.tsx'
+import { ProjectsPage } from './pages/ProjectsPage.tsx'
 import { SettingsPage } from './pages/SettingsPage.tsx'
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
@@ -16,6 +17,8 @@ export default function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<CalendarPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:name" element={<ProjectsPage />} />
               <Route path="/day/:date" element={<DayPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />

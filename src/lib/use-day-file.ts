@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { applyProgramToDay } from './programs/program.ts'
 import {
   emptyDayFile,
+  emptyGoal,
   isDayEmpty,
   parseDayMarkdown,
   serializeDayMarkdown,
   statsFromDay,
   type DayFile,
+  type DayGoal,
   type DayTask,
 } from './day-file/index.ts'
 import { createOctokit, dayFilePath, getFile, putFile, type RepoRef } from './github/client.ts'
@@ -15,6 +16,10 @@ import { useIndexOverlay } from './overlay-context.tsx'
 import { useSettings } from './settings-context.tsx'
 
 export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
+
+function mapGoals(day: DayFile, index: number, next: DayGoal): DayFile {
+  return { ...day, goals: day.goals.map((goal, i) => (i === index ? next : goal)) }
+}
 
 export function useDayFile(date: string) {
   const { settings, ready } = useSettings()
@@ -107,16 +112,14 @@ export function useDayFile(date: string) {
       const blob = await getFile(octokit, repo, dayFilePath(date))
       if (!blob) {
         shaRef.current = null
-        const seeded = applyProgramToDay(date) ?? emptyDayFile(date)
-        dayRef.current = seeded
-        setDay(seeded)
+        const empty = emptyDayFile(date)
+        dayRef.current = empty
+        setDay(empty)
       } else {
         shaRef.current = blob.sha
         const parsed = { ...parseDayMarkdown(blob.text, date), date }
-        const seeded = isDayEmpty(parsed) ? applyProgramToDay(date) : null
-        const next = seeded ?? parsed
-        dayRef.current = next
-        setDay(next)
+        dayRef.current = parsed
+        setDay(parsed)
       }
     } catch (error) {
       setLoadError(isAppError(error) ? error : mapGithubError(error))
@@ -146,37 +149,80 @@ export function useDayFile(date: string) {
     return () => document.removeEventListener('visibilitychange', onVisible)
   }, [reload])
 
+  const updateGoal = useCallback(
+    (index: number, next: DayGoal) => schedule(mapGoals(dayRef.current, index, next)),
+    [schedule],
+  )
+
+  const setGoalTitle = useCallback(
+    (index: number, title: string) => {
+      const goal = dayRef.current.goals[index]
+      if (!goal) return
+      updateGoal(index, { ...goal, title })
+    },
+    [updateGoal],
+  )
+
+  const setGoalPlan = useCallback(
+    (index: number, plan: string) => {
+      const goal = dayRef.current.goals[index]
+      if (!goal) return
+      updateGoal(index, { ...goal, plan })
+    },
+    [updateGoal],
+  )
+
+  const setGoalProject = useCallback(
+    (index: number, project: string) => {
+      const goal = dayRef.current.goals[index]
+      if (!goal) return
+      updateGoal(index, { ...goal, project: project.trim() })
+    },
+    [updateGoal],
+  )
+
   const toggleTask = useCallback(
-    (index: number) => {
-      const current = dayRef.current
-      schedule({
-        ...current,
-        tasks: current.tasks.map((task, i) => (i === index ? { ...task, done: !task.done } : task)),
+    (goalIndex: number, taskIndex: number) => {
+      const goal = dayRef.current.goals[goalIndex]
+      if (!goal) return
+      updateGoal(goalIndex, {
+        ...goal,
+        tasks: goal.tasks.map((task, i) => (i === taskIndex ? { ...task, done: !task.done } : task)),
       })
     },
-    [schedule],
-  )
-
-  const setGoal = useCallback(
-    (goal: string) => schedule({ ...dayRef.current, goal }),
-    [schedule],
-  )
-
-  const setPlan = useCallback(
-    (plan: string) => schedule({ ...dayRef.current, plan }),
-    [schedule],
+    [updateGoal],
   )
 
   const addTasks = useCallback(
-    (tasks: DayTask[]) => schedule({ ...dayRef.current, tasks: [...dayRef.current.tasks, ...tasks] }),
-    [schedule],
+    (goalIndex: number, tasks: DayTask[]) => {
+      const goal = dayRef.current.goals[goalIndex]
+      if (!goal) return
+      updateGoal(goalIndex, { ...goal, tasks: [...goal.tasks, ...tasks] })
+    },
+    [updateGoal],
   )
 
   const deleteTask = useCallback(
+    (goalIndex: number, taskIndex: number) => {
+      const goal = dayRef.current.goals[goalIndex]
+      if (!goal) return
+      updateGoal(goalIndex, {
+        ...goal,
+        tasks: goal.tasks.filter((_, i) => i !== taskIndex),
+      })
+    },
+    [updateGoal],
+  )
+
+  const addGoal = useCallback(() => {
+    schedule({ ...dayRef.current, goals: [...dayRef.current.goals, emptyGoal()] })
+  }, [schedule])
+
+  const deleteGoal = useCallback(
     (index: number) => {
       schedule({
         ...dayRef.current,
-        tasks: dayRef.current.tasks.filter((_, i) => i !== index),
+        goals: dayRef.current.goals.filter((_, i) => i !== index),
       })
     },
     [schedule],
@@ -194,11 +240,14 @@ export function useDayFile(date: string) {
     saveError,
     status,
     ready,
+    setGoalTitle,
+    setGoalPlan,
+    setGoalProject,
     toggleTask,
-    setGoal,
-    setPlan,
     addTasks,
     deleteTask,
+    addGoal,
+    deleteGoal,
     reload,
     retrySave,
   }

@@ -1,19 +1,15 @@
 import { parseFrontmatter } from './frontmatter.ts'
+import { emptyGoal, parseGoalHeading, parseGoalSection } from './goals.ts'
 import { splitMarkdownSections } from './sections.ts'
 import { parseTaskList } from './tasks.ts'
-import { DayParseError, type DayFile, type ExtraSection } from './types.ts'
-
-// YAML frontmatter через js-yaml FAILSAFE_SCHEMA: даты остаются строками,
-// в бандл не попадает gray-matter (eval + Node Buffer).
+import { DayParseError, type DayFile, type DayGoal, type ExtraSection } from './types.ts'
 
 const RESERVED_FRONTMATTER = new Set(['date', 'goal'])
 
 export function emptyDayFile(date: string): DayFile {
   return {
     date,
-    goal: '',
-    plan: '',
-    tasks: [],
+    goals: [],
     extraFrontmatter: {},
     extraSections: [],
   }
@@ -23,27 +19,33 @@ export function parseDayMarkdown(raw: string, fallbackDate = ''): DayFile {
   try {
     const { data, content } = parseFrontmatter(raw)
     const date = stringifyDate(data.date) || fallbackDate
-    const goal = stringifyGoal(data.goal)
+    const legacyTitle = stringifyGoal(data.goal)
     const extraFrontmatter: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(data)) {
       if (!RESERVED_FRONTMATTER.has(key)) extraFrontmatter[key] = value
     }
 
     const sections = splitMarkdownSections(content)
-    let plan = ''
-    let tasksRaw = ''
+    const namedGoals: DayGoal[] = []
+    let legacyPlan = ''
+    let legacyTasksRaw = ''
     const extraSections: ExtraSection[] = []
     let sawPlan = false
     let sawTasks = false
 
     for (const section of sections) {
+      const goalTitle = parseGoalHeading(section.title)
+      if (goalTitle != null) {
+        namedGoals.push(parseGoalSection(goalTitle, section.body))
+        continue
+      }
       if (section.title === 'План' && !sawPlan) {
-        plan = section.body
+        legacyPlan = section.body
         sawPlan = true
         continue
       }
       if (section.title === 'Задачи' && !sawTasks) {
-        tasksRaw = section.body
+        legacyTasksRaw = section.body
         sawTasks = true
         continue
       }
@@ -52,14 +54,17 @@ export function parseDayMarkdown(raw: string, fallbackDate = ''): DayFile {
 
     if (!sawPlan && extraSections[0]?.title === '') {
       const preamble = extraSections.shift()
-      if (preamble) plan = preamble.body
+      if (preamble) legacyPlan = preamble.body
     }
+
+    const goals =
+      namedGoals.length > 0
+        ? namedGoals
+        : legacyGoal(legacyTitle, legacyPlan, parseTaskList(legacyTasksRaw))
 
     return {
       date,
-      goal,
-      plan,
-      tasks: parseTaskList(tasksRaw),
+      goals,
       extraFrontmatter,
       extraSections,
     }
@@ -67,6 +72,11 @@ export function parseDayMarkdown(raw: string, fallbackDate = ''): DayFile {
     if (error instanceof DayParseError) throw error
     throw new DayParseError('Не удалось разобрать файл дня', { cause: error })
   }
+}
+
+function legacyGoal(title: string, plan: string, tasks: DayGoal['tasks']): DayGoal[] {
+  if (!title && !plan.trim() && tasks.length === 0) return []
+  return [{ title, project: '', plan, tasks }]
 }
 
 function stringifyDate(value: unknown): string {
@@ -88,3 +98,5 @@ function stringifyGoal(value: unknown): string {
   if (typeof value === 'string') return value
   return String(value)
 }
+
+export { emptyGoal }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { GitHubConnect } from '../components/GitHubConnect.tsx'
+import { InstallAppCard } from '../components/InstallApp.tsx'
 import { maskToken } from '../lib/settings.ts'
 import { useSettings } from '../lib/settings-context.tsx'
 
@@ -34,6 +35,8 @@ export function SettingsPage() {
       ) : (
         <GitHubConnect />
       )}
+
+      <InstallAppCard />
 
       <button
         type="button"

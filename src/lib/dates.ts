@@ -47,6 +47,16 @@ export function dayHeading(iso: string): string {
   }).format(date)
 }
 
+export function shortDayLabel(iso: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso)
+  if (!match) return iso
+  const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'short',
+  }).format(date)
+}
+
 export type CalendarCell = {
   date: string
   inMonth: boolean

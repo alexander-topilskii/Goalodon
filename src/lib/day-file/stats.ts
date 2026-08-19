@@ -1,14 +1,24 @@
+import { allTasks, isGoalEmpty, primaryGoalTitle } from './goals.ts'
 import type { DayFile, DayIndexEntry } from './types.ts'
 
 export function statsFromDay(day: DayFile): DayIndexEntry {
-  const total = day.tasks.length
-  const done = day.tasks.filter((task) => task.done).length
-  const hasContent = Boolean(day.goal.trim() || day.plan.trim() || total > 0)
+  const tasks = allTasks(day.goals)
+  const total = tasks.length
+  const done = tasks.filter((task) => task.done).length
+  const hasContent = day.goals.some((goal) => !isGoalEmpty(goal))
   return {
-    goal: day.goal,
+    goal: primaryGoalTitle(day.goals),
     total,
     done,
     hasContent,
+    goals: day.goals
+      .filter((goal) => !isGoalEmpty(goal))
+      .map((goal) => ({
+        title: goal.title,
+        project: goal.project.trim(),
+        total: goal.tasks.length,
+        done: goal.tasks.filter((task) => task.done).length,
+      })),
   }
 }
 

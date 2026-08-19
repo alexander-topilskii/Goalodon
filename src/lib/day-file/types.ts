@@ -4,6 +4,13 @@ export type DayTask = {
   notes: string[]
 }
 
+export type DayGoal = {
+  title: string
+  project: string
+  plan: string
+  tasks: DayTask[]
+}
+
 export type ExtraSection = {
   title: string
   body: string
@@ -11,11 +18,16 @@ export type ExtraSection = {
 
 export type DayFile = {
   date: string
-  goal: string
-  plan: string
-  tasks: DayTask[]
+  goals: DayGoal[]
   extraFrontmatter: Record<string, unknown>
   extraSections: ExtraSection[]
+}
+
+export type GoalIndexEntry = {
+  title: string
+  project: string
+  total: number
+  done: number
 }
 
 export type DayIndexEntry = {
@@ -23,6 +35,7 @@ export type DayIndexEntry = {
   total: number
   done: number
   hasContent: boolean
+  goals: GoalIndexEntry[]
 }
 
 export type GraphIndex = {

@@ -25,15 +25,19 @@ export function TabBar() {
   const navigate = useNavigate()
   const today = localISODate()
   const onToday = location.pathname === `/day/${today}`
+  const onProjects = location.pathname.startsWith('/projects')
 
   return (
     <nav
       className="fixed bottom-0 left-1/2 z-20 w-full max-w-[32rem] -translate-x-1/2 border-t border-stone-200 bg-[#fbf8f3]/95 backdrop-blur-md"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex h-16 items-stretch px-2">
+      <div className="flex h-16 items-stretch px-1">
         <NavLink to={calendarHref()} className={itemClass} end>
           Календарь
+        </NavLink>
+        <NavLink to="/projects" className={() => itemClass({ isActive: onProjects })}>
+          Проекты
         </NavLink>
         <button
           type="button"

@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ErrorBanner, NeedSetup } from '../components/Feedback.tsx'
+import { CalendarSkeleton } from '../components/Skeleton.tsx'
 import {
   localISODate,
   monthCells,
@@ -9,37 +10,11 @@ import {
   shiftMonth,
   WEEKDAYS,
 } from '../lib/dates.ts'
-import { getProgramDay, programKindTone } from '../lib/programs/program.ts'
+import { calendarCellClass } from '../lib/programs/program.ts'
 import type { CalendarState } from '../lib/settings.ts'
-import type { DayIndexEntry, GraphIndex } from '../lib/day-file/types.ts'
-import { createOctokit, getIndexFile, testRepoAccess } from '../lib/github/client.ts'
-import { isAppError, mapGithubError, type AppError } from '../lib/github/errors.ts'
-import { useIndexOverlay } from '../lib/overlay-context.tsx'
+import type { DayIndexEntry } from '../lib/day-file/types.ts'
 import { loadCalendarState, saveCalendarState } from '../lib/settings.ts'
-import { useSettings } from '../lib/settings-context.tsx'
-
-const emptyIndex: GraphIndex = { generatedAt: null, days: {} }
-
-function parseIndex(text: string): GraphIndex {
-  const raw = JSON.parse(text) as Partial<GraphIndex>
-  return {
-    generatedAt: typeof raw.generatedAt === 'string' ? raw.generatedAt : null,
-    days: raw.days && typeof raw.days === 'object' ? raw.days : {},
-  }
-}
-
-function cellTone(entry: DayIndexEntry | undefined, programKind?: string): string {
-  if (entry?.hasContent) {
-    if (entry.total > 0 && entry.done === entry.total) return 'bg-emerald-700 text-white'
-    return 'bg-emerald-100 text-emerald-950'
-  }
-  if (!programKind) return 'bg-white text-stone-800'
-  const tone = programKindTone(programKind)
-  if (tone === 'rest') return 'bg-stone-100 text-stone-400'
-  if (tone === 'test') return 'bg-rose-100 text-rose-950'
-  if (tone === 'gtg') return 'bg-sky-100 text-sky-950'
-  return 'bg-amber-100 text-amber-950'
-}
+import { useGraphIndex } from '../lib/use-graph-index.ts'
 
 function resolveState(params: URLSearchParams, fallback: CalendarState): CalendarState {
   const monthFromUrl = parseYearMonth(params.get('month') ?? '')
@@ -58,18 +33,12 @@ function resolveState(params: URLSearchParams, fallback: CalendarState): Calenda
 }
 
 export function CalendarPage() {
-  const { settings, ready } = useSettings()
-  const { merge, clear } = useIndexOverlay()
+  const { ready, merged, loading, fetched, error, load } = useGraphIndex()
   const [params, setParams] = useSearchParams()
   const today = localISODate()
   const todayParts = parseYearMonth(today.slice(0, 7)) ?? { year: 2026, month: 1 }
   const fallback = loadCalendarState({ ...todayParts, view: 'month' })
   const state = resolveState(params, fallback)
-
-  const [index, setIndex] = useState<GraphIndex>(emptyIndex)
-  const [loading, setLoading] = useState(ready)
-  const [error, setError] = useState<AppError | null>(null)
-  const merged = useMemo(() => merge(index), [merge, index])
 
   const setView = useCallback(
     (next: CalendarState) => {
@@ -94,35 +63,12 @@ export function CalendarPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const load = useCallback(async () => {
-    if (!ready) return
-    setLoading(true)
-    setError(null)
-    const octokit = createOctokit(settings.token)
-    const repo = { owner: settings.owner, repo: settings.repo, branch: settings.branch }
-    try {
-      await testRepoAccess(octokit, repo)
-      const blob = await getIndexFile(octokit, repo)
-      clear()
-      if (!blob) setIndex(emptyIndex)
-      else setIndex(parseIndex(blob.text))
-    } catch (err) {
-      setError(isAppError(err) ? err : mapGithubError(err))
-    } finally {
-      setLoading(false)
-    }
-  }, [ready, settings.token, settings.owner, settings.repo, settings.branch, clear])
-
-  useEffect(() => {
-    void load()
-  }, [load])
-
   if (!ready) return <NeedSetup />
 
   const { year, month, view } = state
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4" aria-busy={loading}>
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1">
           <button
@@ -172,17 +118,19 @@ export function CalendarPage() {
         </button>
         <button
           type="button"
-          className="min-h-11 rounded-xl border border-stone-300 bg-white px-3 text-sm font-medium"
+          className="min-h-11 rounded-xl border border-stone-300 bg-white px-3 text-sm font-medium disabled:opacity-60"
+          disabled={loading}
           onClick={() => void load()}
         >
-          Обновить
+          {loading && fetched ? 'Обновляем…' : 'Обновить'}
         </button>
       </div>
 
       {error ? <ErrorBanner message={error.message} actionLabel="Повторить" onAction={() => void load()} /> : null}
-      {loading ? <p className="text-sm text-stone-500">Загружаем календарь…</p> : null}
 
-      {view === 'year' ? (
+      {loading && !fetched ? (
+        <CalendarSkeleton yearView={view === 'year'} />
+      ) : view === 'year' ? (
         <div className="flex flex-col gap-6">
           {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
             <button key={m} type="button" className="text-left" onClick={() => setView({ year, month: m, view: 'month' })}>
@@ -224,27 +172,24 @@ function MonthGrid({
       <div className={`grid grid-cols-7 ${compact ? 'gap-0.5' : 'gap-1'}`}>
         {cells.map((cell) => {
           const entry = days[cell.date]
-          const program = getProgramDay(cell.date)
           const status = entry?.hasContent
             ? entry.total > 0
               ? `${entry.done} из ${entry.total}`
-              : 'есть запись'
-            : program
-              ? program.kind
-              : 'нет записи'
+              : entry.goal || 'есть запись'
+            : 'нет записи'
           const inner = (
             <span
               className={[
                 'flex flex-col items-center justify-center rounded-lg font-medium',
                 compact ? 'h-7 text-[10px]' : 'min-h-12 px-0.5 py-1 text-sm',
-                cell.inMonth ? cellTone(entry, program?.kind) : 'bg-transparent text-stone-300',
+                cell.inMonth ? calendarCellClass(entry) : 'bg-transparent text-stone-300',
                 cell.date === today ? 'ring-2 ring-stone-900 ring-offset-1 ring-offset-[#fbf8f3]' : '',
               ].join(' ')}
             >
               {Number(cell.date.slice(8, 10))}
-              {!compact && cell.inMonth && program ? (
+              {!compact && cell.inMonth && entry?.goal ? (
                 <span className="max-w-full truncate text-[8px] font-medium leading-tight opacity-80">
-                  {program.kind}
+                  {entry.goal}
                 </span>
               ) : null}
             </span>
