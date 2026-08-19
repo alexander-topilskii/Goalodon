@@ -6,11 +6,13 @@ import { CalendarPage } from './pages/CalendarPage.tsx'
 import { DayPage } from './pages/DayPage.tsx'
 import { SettingsPage } from './pages/SettingsPage.tsx'
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
+
 export default function App() {
   return (
     <SettingsProvider>
       <IndexOverlayProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<CalendarPage />} />

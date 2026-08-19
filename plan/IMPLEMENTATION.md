@@ -104,3 +104,16 @@
 - [x] Сверить критерии из `PLAN.md` §11
 
 **Готово:** новым пользователем можно пройти онбординг по README.
+
+---
+
+## Шаг 9. GitHub Pages
+
+- [x] `.github/workflows/pages.yml` (build + `actions/deploy-pages`)
+- [x] `VITE_BASE` = `/<repo>/` (или `/` для `owner.github.io`)
+- [x] `BrowserRouter` basename из `import.meta.env.BASE_URL`
+- [x] `dist/404.html` = копия `index.html` (SPA-маршруты `/day/...`)
+- [x] `public/.nojekyll`
+- [x] README: Pages source = GitHub Actions, приватный репо / публичные данные
+
+**Готово:** пуш кода на `main` публикует UI; данные по-прежнему только через API.
