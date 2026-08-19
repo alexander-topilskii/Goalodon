@@ -1,4 +1,17 @@
 {
-  "generatedAt": null,
-  "days": {}
+  "generatedAt": "2026-08-19T17:11:09.358Z",
+  "days": {
+    "2026-08-10": {
+      "goal": "GTG",
+      "total": 5,
+      "done": 5,
+      "hasContent": true
+    },
+    "2026-08-11": {
+      "goal": "GTG",
+      "total": 5,
+      "done": 5,
+      "hasContent": true
+    }
+  }
 }
