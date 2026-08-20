@@ -14,8 +14,23 @@ export type AppError = {
   message: string
 }
 
+const APP_CODES: ReadonlySet<string> = new Set([
+  'unauthorized',
+  'forbidden',
+  'not_found',
+  'conflict',
+  'rate_limit',
+  'network',
+  'truncated',
+  'parse',
+  'unknown',
+])
+
 export function isAppError(value: unknown): value is AppError {
-  return Boolean(value && typeof value === 'object' && 'code' in value && 'message' in value)
+  if (!value || typeof value !== 'object') return false
+  const code = (value as { code?: unknown }).code
+  const message = (value as { message?: unknown }).message
+  return typeof code === 'string' && APP_CODES.has(code) && typeof message === 'string'
 }
 
 type OctokitLikeError = {
@@ -24,9 +39,20 @@ type OctokitLikeError = {
   name?: string
 }
 
+export function isNetworkFailure(error: unknown): boolean {
+  if (error instanceof TypeError) return true
+  const message = String((error as { message?: unknown }).message ?? '').toLowerCase()
+  return (
+    message.includes('failed to fetch') ||
+    message.includes('load failed') ||
+    message.includes('networkerror') ||
+    message.includes('network request failed')
+  )
+}
+
 export function mapGithubError(error: unknown): AppError {
   if (isAppError(error)) return error
-  if (error instanceof TypeError) {
+  if (isNetworkFailure(error)) {
     return { code: 'network', message: 'Нет сети. Проверьте соединение и повторите.' }
   }
 

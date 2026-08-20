@@ -19,17 +19,22 @@ export function dayFilePath(date: string): string {
   return `data/days/${date}.md`
 }
 
+function githubFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  if (input instanceof Request) {
+    return fetch(new Request(input, { ...init, cache: 'no-store' }))
+  }
+  return fetch(input, { ...init, cache: 'no-store' })
+}
+
 export function createOctokit(token: string): Octokit {
-  return new Octokit({ auth: token })
+  return new Octokit({
+    auth: token,
+    request: { fetch: githubFetch },
+  })
 }
 
 export async function testRepoAccess(octokit: Octokit, ref: RepoRef): Promise<void> {
   await octokit.repos.get({ owner: ref.owner, repo: ref.repo })
-}
-
-const FRESH_HEADERS = {
-  'If-None-Match': '',
-  'Cache-Control': 'no-cache',
 }
 
 async function headCommitSha(octokit: Octokit, ref: RepoRef): Promise<string | null> {
@@ -38,13 +43,10 @@ async function headCommitSha(octokit: Octokit, ref: RepoRef): Promise<string | n
       owner: ref.owner,
       repo: ref.repo,
       ref: `heads/${ref.branch}`,
-      headers: FRESH_HEADERS,
     })
     return data.object.sha
-  } catch (error) {
-    const mapped = mapGithubError(error)
-    if (mapped.code === 'not_found') return null
-    throw mapped
+  } catch {
+    return null
   }
 }
 
@@ -60,7 +62,6 @@ async function readContent(
       repo: ref.repo,
       path,
       ref: rev,
-      headers: FRESH_HEADERS,
     })
     if (Array.isArray(data) || data.type !== 'file' || !('content' in data) || !data.sha) {
       throw { status: 404, message: 'not a file' }
